@@ -66,3 +66,27 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+#1.react开发环境
+ npm install -g create-react-app
+ React脚手架搭建： create-react-app 
+ npm stast 开启调试环境
+ 浏览器访问locallhost：3000查看调试页面
+ 文件结构
+ —— README.md --------- 介绍文档
+ —— node_modules ------ 第三方安装包
+ —— package.json ------ npm项目配置
+ —— .gitignore -------- git 配置
+ —— public ------------ 公共资源
+  —— index.html ------- 首页html
+ —— src --------------- 源码目录
+  —— App.css ---------- css文件
+  —— App.js ----------- React组件
+  —— index.js --------- 入口js文件
+  —— logo.svg --------- svg图片
+
+  如何使用create-react-app
+    npm install redux --save 安装第三方库redux
+    npm run eject 弹出配置文件 可以自定义配置webpack
+    扩展package.json里的script字段， 扩展npm run 命令
