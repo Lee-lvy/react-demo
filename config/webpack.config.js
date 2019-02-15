@@ -37,6 +37,7 @@ const useTypeScript = fs.existsSync(paths.appTsConfig);
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
+const lessRegex = /\.less$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
@@ -290,16 +291,6 @@ module.exports = function(webpackEnv) {
       rules: [
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
-        {
-          test: /\.less$/,
-          use: getStyleLoaders(
-            {
-              importLoaders: 2,
-              sourceMap: isEnvProduction && shouldUseSourceMap,
-            },
-            'less-loader'
-          ),
-        },
 
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
@@ -311,7 +302,7 @@ module.exports = function(webpackEnv) {
               options: {
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
-                
+
               },
               loader: require.resolve('eslint-loader'),
             },
@@ -344,7 +335,7 @@ module.exports = function(webpackEnv) {
                 customize: require.resolve(
                   'babel-preset-react-app/webpack-overrides'
                 ),
-                
+
                 plugins: [
                   [
                     require.resolve('babel-plugin-named-asset-import'),
@@ -358,7 +349,7 @@ module.exports = function(webpackEnv) {
                     },
                   ],
                   [
-                    "import",
+                    require.resolve('babel-plugin-import'),
                     {
                       "libraryName": "antd-mobile",
                       "style": true
@@ -391,7 +382,8 @@ module.exports = function(webpackEnv) {
                 ],
                 plugins: [
                   [
-                    "import",
+
+                    require.resolve('babel-plugin-import'),
                     {
                       "libraryName": "antd-mobile",
                       "style": true
@@ -400,7 +392,7 @@ module.exports = function(webpackEnv) {
                 ],
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
-                
+
                 // If an error happens in a package, it's possible to be
                 // because it was compiled. Thus, we don't want the browser
                 // debugger to show the original code. Instead, the code
@@ -438,6 +430,16 @@ module.exports = function(webpackEnv) {
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
               }),
+            },
+            {
+              test: lessRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                'less-loader'
+              ),
             },
             // Opt-in support for SASS (using .scss or .sass extensions).
             // By default we support SASS Modules with the
