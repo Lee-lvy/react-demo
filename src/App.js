@@ -2,36 +2,34 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import './ES6';
-import { Button } from 'antd-mobile';
-
-import './xx.less';
-
-import 'antd-mobile/lib/button/style/index.less';
+import { Button, List } from 'antd-mobile';
+// import { removeGUAN } from './index.redux';
+// import { addGUAN } from './index.redux';
 
 // import 'antd-mobile/dist/antd-mobile.css'
 // import {createStore} from 'redux';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+  }
   render() {
     const boss="LeeDaDa"
+    const store = this.props.store;
+    const num = store.getState();
+    const addGUAN = this.props.addGUAN;
+    const removeGUAN = this.props.removeGUAN;
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1>welcome to lgh country!</h1>
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <h1>现在有机枪{num}把</h1>
+          <button onClick={()=>store.dispatch(addGUAN())}>申请武器</button>
+          <button onClick={()=>store.dispatch(removeGUAN())}>上交武器</button>
           <p>独立团，团长{boss}</p>
-          <Yiyin laoda='lgh233'/>
+          {/* 如果多层组件就耀一层层往下传 会陷入属性传递陷阱 */}
+          <Yiyin  laoda='lgh233' store={store} />
           <Qibinglian 老大="23333"/>
         </header>
       </div>
@@ -94,11 +92,15 @@ class Yiyin extends Component {
         <h2>一营营长，{this.props.laoda}</h2>
         {/* 使用箭头函数 直接绑定在实例上 方式2 */}
         <Button type="primary" onClick={() => this.addSolder()}>新兵入伍</Button>
-        <ul>
+        <List renderHeader={()=>'士兵列表'}>
           {this.state.solders.map(v => {
-            return <li key={v}>{v}</li>
+            return (
+              <List.Item key={v}>
+                {v}
+              </List.Item>
+            )
           })}
-        </ul>
+        </List>
       </div>
     )
   }

@@ -136,7 +136,67 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
     > 初始化周期
     > 组件重新渲染生命周期
     > 组件卸载生命周期
-    > antd-mobile 蚂蚁金服出品的ui组件库 https://mobile.ant.design/index-cn
-      > 按需加载 npm install babel-plugin-import --save
-    
+    > antd-mobile 蚂蚁金服出品的ui组件库 https://mobile.ant.design/index-cn  兼容web和reactnative的
+      > 按需加载 npm install babel-plugin-import --save 
+        并在.babelrc中加上{
+                          "plugins": [
+                              [
+                                  "import",
+                                  {
+                                      "libraryName": "antd-mobile",
+                                      "style": true
+                                  }
+                              ]
+                          ]
+                        }
+      import 后可直接使用，展示几个典型的 后面需要可到官网查找
+        > Layout布局
+        > 表单组件 数据展示组件 选择器等等
+        > 操作组件
+
+# redux 专注于状态管理的库
+  > Redux 专注于状态管理 和 react解藕  npm install --save redux
+  > 单一状态 单向数据流
+  > 核心概念：store state action reducer
+    状态少可以用setState管理 但是多状态后需要用redux管理 view只管显示
+  > 主要功能
+    保险箱 store   记录 state   专员 dispatch  做什么 action
+    处理变化的 reducer 拿到state 和 action  生成新的state
+    > 通过 reducer 新建store 通过store.getState 获取状态
+    > 需要状态变更 store.dispatch(action) 来修改状态
+    > reducer 函数接受state 和 action 返回新的 state 可以用store.subscribe 监听每次修改
+      example：
+        index.js: 
+          import { createStore } from 'redux';
+          const counter (state=0, action){
+            switch(action.type){
+              case '加机关枪':
+                  return state+1; 
+              case '减机关枪':
+                  return state-1;
+              <!-- 默认 -->
+              default:
+                  return 10;
+            }
+          }
+          const store = createStore(counter); //建立store
+          <!-- 监听改变方法 -->
+          const listener (){
+            const current = store.getState();
+          }
+          store.subscribe(listener);
+          <!-- 派发事件 传递action -->
+          store.dispatch('加机关枪');
+          console.log(store.getState());
+      redux 和 react 如何一起使用：
+        store.dispatch()方法传递给组件 内部可以调用修改状态
+        subscribe 订阅 render 函数 每次修改都要重新渲染
+        redux 相关内容 移到单独的文件index.redux.js单独管理 
+      更进一步 redux处理异步
+        redux处理异步，需要redux-thunk插件 npm install redux-thunk --save
+          > 使用applyMiddleware开启thunk中间件
+          > Action可以返回函数 使用dispatch提交action
+        react-redux react绑定库 优雅链接react和redux
+        redux-devtools 开发者工具
+       
 
